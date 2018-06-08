@@ -5,6 +5,6 @@ setup(
     version='0.1.0',
     url='https://github.com/FWin22/drprobe_interface/',
     author='Florian Winkler',
-    author_email="flowinkler22@gmail.com",
+    author_email='flowinkler22@gmail.com',
     description='Python interface to the Dr Probe software package',
 )
