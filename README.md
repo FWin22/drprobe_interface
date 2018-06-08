@@ -10,7 +10,7 @@ package.](http://www.er-c.org/barthel/drprobe/)
 ## Example
 Import the DrProbe package:
     
-    import drprobe_interface as drp
+    import drprobe as drp
 
 Run the celslc tool:
     
