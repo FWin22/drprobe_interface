@@ -7,6 +7,10 @@ package.](http://www.er-c.org/barthel/drprobe/)
 ## Requirements
 [Dr Probe Command Line Tools](http://www.er-c.org/barthel/drprobe/drprobe-download.html) must be installed.
 
+## Installation
+
+    pip install --index-url https://test.pypi.org/simple/ drprobe-interface
+
 ## Example
 Import the DrProbe package:
     
