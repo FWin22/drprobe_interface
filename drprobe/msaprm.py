@@ -47,9 +47,9 @@ class MsaPrm(object):
         Horizontal scan frame offset [nm]. X coordinate of the lower left scan frame corner.
     v_scan_offset : float
         Vertical scan frame offset [nm]. X coordinate of the lower left scan frame corner.
-    h_scan_frame : float
+    h_scan_frame_size : float
         Horizontal scan frame size [nm]
-    v_scan_frame : float
+    v_scan_frame_size : float
         Vertical scan frame size [nm]
     scan_frame_rot : float
         Scan frame rotation [deg] w.r.t. the slice data.
@@ -74,7 +74,7 @@ class MsaPrm(object):
         three digit number.
     number_of_slices : int
         Number of slice files to load
-    number_of_frozen_lattice : int
+    number_frozen_lattice : int
         Number of frozen lattice variants per slice.
     min_num_frozen : int
         Minimum number of frozen lattice variations averaged per scan pixel in STEM mode.
@@ -116,8 +116,8 @@ class MsaPrm(object):
         self.tilt_y = msa_dict.get('tilt_y', 0)
         self.h_scan_offset = msa_dict.get('h_scan_offset', 0)
         self.v_scan_offset = msa_dict.get('v_scan_offset', 0)
-        self.h_scan_frame_size = msa_dict.get('h_scan_frame', 1)
-        self.v_scan_frame_size = msa_dict.get('v_scan_frame', 1)
+        self.h_scan_frame_size = msa_dict.get('h_scan_frame_size', 1)
+        self.v_scan_frame_size = msa_dict.get('v_scan_frame_size', 1)
         self.scan_frame_rot = msa_dict.get('scan_frame_rot', 0)
         self.scan_columns = msa_dict.get('scan_columns', 0)
         self.scan_rows = msa_dict.get('scan_rows', 0)
@@ -128,7 +128,7 @@ class MsaPrm(object):
         self.super_cell_z = msa_dict.get('super_cell_z', 1)
         self.slice_files = msa_dict.get('slice_files', "slc/slices")
         self.number_of_slices = msa_dict.get('number_of_slices', 5)
-        self.number_frozen_lattice = msa_dict.get('number_of_frozen_lattice', 1)
+        self.number_frozen_lattice = msa_dict.get('number_frozen_lattice', 1)
         self.min_num_frozen = msa_dict.get('min_num_frozen', 1)
         self.det_readout_period = msa_dict.get('det_readout_period', 1)
         self.tot_number_of_slices = msa_dict.get('tot_number_of_slices', 10)
