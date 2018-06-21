@@ -61,7 +61,7 @@ Depending on the datatype and size, the simulated image can be loaded in python 
 
     import numpy as np
     img = np.fromfile('img.dat'
-    np.fromfile('img.dat', dtype='float32') # Change to 'complex64', when simulating complex-valued
-     wavefunctions
+    np.fromfile('img.dat', dtype='float32')
+    # Change dtype to 'complex64', when simulating complex-valued wavefunctions
     img = img.reshape(wavimg_prm.output_dim)
   
