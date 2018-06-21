@@ -10,8 +10,8 @@ import re
 import subprocess
 
 
-def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None, sort=None,
-                cif=False, override=False):
+def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
+                repeat=None, sort=None, cif=False, override=False):
     """
     Runs cellmuncher. Supports only a few basic options at the moment.
 
@@ -25,6 +25,9 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None, s
         cel file of the cel that will be attached to cel_file
     attach_direction : str, optional
         direction in which the cel shall be attached (x, y, z)
+    repeat : (str, int), optional
+        repeat the cel file in a certain direction, e.g., ('x', 5) repeats the cel file 5 times in
+        x-direction)
     sort : list of str, optional
         sort cel file according to strings (eg, 'x' for x-coordinate or 'e' for element)
     cif : bool, optional
@@ -40,6 +43,9 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None, s
     if attach_cel:
         _cellmuncher_options['attach_cel'] = ' --attach-cell={},XMS,{}'.format(attach_cel,
                                                                                attach_direction)
+    if repeat:
+        _cellmuncher_options['repeat'] = ' --repeat={},{}'.format(repeat[0], repeat[1])
+
     if sort:
         for item in sort:
             _cellmuncher_options['sort'] += ' -s={}'.format(item)
