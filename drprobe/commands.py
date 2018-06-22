@@ -40,13 +40,13 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
 
     if cif:
         _cellmuncher_options['cif'] = ' --cif'
-    if attach_cel:
+    if attach_cel is not None:
         _cellmuncher_options['attach_cel'] = ' --attach-cell={},XMS,{}'.format(attach_cel,
                                                                                attach_direction)
-    if repeat:
+    if repeat is not None:
         _cellmuncher_options['repeat'] = ' --repeat={},{}'.format(repeat[0], repeat[1])
 
-    if sort:
+    if sort is not None:
         for item in sort:
             _cellmuncher_options['sort'] += ' -s={}'.format(item)
     if override:
@@ -164,36 +164,36 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
         _celslc_options['rev'] = ' -rev'
     if fl:
         _celslc_options['fl'] = ' -fl'
-    if nv:
+    if nv is not None:
         _celslc_options['nv'] = ' -nv {}'.format(nv)
     if dwf:
         _celslc_options['dwf'] = ' -dwf'
-    if buni:
+    if buni is not None:
         _celslc_options['buni'] = ' -buni {}'.format(buni)
     if absorb:
         _celslc_options['absorb'] = ' -abs'
-    if abf:
+    if abf is not None:
         _celslc_options['abf'] = ' -abf {}'.format(abf)
     if pot:
         _celslc_options['pot'] = ' -pot'
     if _3dp:
         _celslc_options['_3dp'] = ' -3dp'
-    if inf:
+    if inf is not None:
         _celslc_options['inf'] = ' -inf {}'.format(inf)
     if pps:
         _celslc_options['pps'] = ' -pps'
-    if ssc:
+    if ssc is not None:
         _celslc_options['ssc'] = ' -ssc {}'.format(ssc)
     if rti:
         _celslc_options['rti'] = ' -rti'
     if silent:
         _celslc_options['silent'] = ' -silent'
-    if prj:
+    if prj is not None:
         _celslc_options['prj'] = ' -prj'
         for i in prj:
             _celslc_options['prj'] += ' {},'.format(i)
         _celslc_options['prj'] = _celslc_options['prj'][:-1]
-    if tla:
+    if tla is not None:
         _celslc_options['tla'] = ' -tla'
         for i in tla:
             _celslc_options['tla'] += ' {},'.format(i)
@@ -345,35 +345,35 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-    if input_image:
+    if input_image is not None:
         _msa_options['input_image'] = ' -in {}'.format(input_image)
-    if inw:
+    if inw is not None:
         _msa_options['inw'] = ' -inw {} {}'.format(inw[0], inw[1])
-    if px:
+    if px is not None:
         _msa_options['px'] = ' -px {}'.format(px)
-    if py:
+    if py is not None:
         _msa_options['py'] = ' -py {}'.format(py)
-    if lx:
+    if lx is not None:
         _msa_options['lx'] = ' -lx {}'.format(px)
-    if ly:
+    if ly is not None:
         _msa_options['ly'] = ' -ly {}'.format(py)
-    if foc:
+    if foc is not None:
         _msa_options['foc'] = ' -foc {}'.format(foc)
-    if tx:
+    if tx is not None:
         _msa_options['tx'] = ' -tx {}'.format(tx)
-    if ty:
+    if ty is not None:
         _msa_options['ty'] = ' -ty {}'.format(ty)
-    if otx:
+    if otx is not None:
         _msa_options['otx'] = ' -otx {}'.format(otx)
-    if oty:
+    if oty is not None:
         _msa_options['oty'] = ' -oty {}'.format(oty)
-    if sr:
+    if sr is not None:
         _msa_options['sr'] = ' -sr {}'.format(sr)
-    if abf:
+    if abf is not None:
         _msa_options['abf'] = ' -abf {}'.format(abf)
-    if buni:
+    if buni is not None:
         _msa_options['buni'] = ' -buni {}'.format(buni)
-    if uuni:
+    if uuni is not None:
         _msa_options['uuni'] = ' -uuni {}'.format(uuni)
     if ctem:
         _msa_options['ctem'] = ' /ctem'
@@ -399,7 +399,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         _msa_options['waveft'] = ' /waveft'
     if avwaveft:
         _msa_options['avwaveft'] = ' /avwaveft'
-    if vtx:
+    if vtx is not None:
         _msa_options['vtx'] = ' /vtx {}'.format(vtx)
     if silent:
         _msa_options['silent'] = ' /silent'
@@ -468,17 +468,17 @@ def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
             _content = [re.split(r'[,\s]\s*', line) for line in _content]
             directory = os.path.split(_content[5][0])[0].replace("'", "")
 
-    if btx:
+    if btx is not None:
         _wavimg_options['btx'] = ' -btx {}'.format(btx)
-    if bty:
+    if bty is not None:
         _wavimg_options['bty'] = ' -bty {}'.format(bty)
-    if foc:
+    if foc is not None:
         _wavimg_options['foc'] = ' -foc {}'.format(foc)
-    if oar:
+    if oar is not None:
         _wavimg_options['oar'] = ' -oar {}'.format(oar)
-    if sbshx:
+    if sbshx is not None:
         _wavimg_options['sbshx'] = ' -sbshx {}'.format(sbshx)
-    if sbshy:
+    if sbshy is not None:
         _wavimg_options['sbshy'] = ' -sbshy {}'.format(sbshy)
     if sil:
         _wavimg_options['sil'] = ' /sil'
