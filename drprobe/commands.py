@@ -226,7 +226,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         foc=None, tx=None, ty=None, otx=None, oty=None, sr=None, abf=None, buni=None, uuni=None,
         ctem=False, txtout=False, _3dout=False, gaussap=False, wave=False, avwave=False,
         detimg=False, verbose=False, debug=False, lapro=False, waveft=False, avwaveft=False,
-        vtx=None, silent=False, rti=False, output=False):
+        pdif=False, pimg=False, epc=False, vtx=None, silent=False, rti=False, output=False):
     """
     Runs msa from Dr. Probe
 
@@ -326,6 +326,13 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         Skip the extra inverse Fourier transform done when using option "wave".
     avwaveft : bool, optional
         Skip the extra inverse Fourier transform done when using option "avwave"
+    pdif : bool, optional
+        Output of integrated diffraction patterns for each probe position.
+    pimg : bool, optional
+        Output of integrated probe images for each probe position.
+    epc : bool, optional
+        Explicit averaging option for partial coherence (focus spread and source size) in the
+        STEM multislice.
     vtx : int, optional
         Enable the use of vortex probes in STEM mode. The integer specifies the orbital angular
         momentum of the probe.
@@ -399,6 +406,12 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         _msa_options['waveft'] = ' /waveft'
     if avwaveft:
         _msa_options['avwaveft'] = ' /avwaveft'
+    if pdif:
+        _msa_options['pdif'] = ' /pdif'
+    if pimg:
+        _msa_options['pimg'] = ' /pimg'
+    if epc:
+        _msa_options['epc'] = ' /epc'
     if vtx is not None:
         _msa_options['vtx'] = ' /vtx {}'.format(vtx)
     if silent:

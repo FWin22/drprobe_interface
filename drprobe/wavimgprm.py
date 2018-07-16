@@ -82,7 +82,7 @@ class WavimgPrm(object):
             variation,
         3 = quasi-coherent linear envelopes,
         4 = Fourier-space synthesis with partially coherent TCC,
-        5: averaging of coherent sub images with explicit focal, angular,
+        5 =  averaging of coherent sub images with explicit focal, angular,
             and frozen lattice variation)
         Default : 1
     temp_coherence : (int, float)
