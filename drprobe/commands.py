@@ -361,9 +361,9 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
     if py is not None:
         _msa_options['py'] = ' -py {}'.format(py)
     if lx is not None:
-        _msa_options['lx'] = ' -lx {}'.format(px)
+        _msa_options['lx'] = ' -lx {}'.format(lx)
     if ly is not None:
-        _msa_options['ly'] = ' -ly {}'.format(py)
+        _msa_options['ly'] = ' -ly {}'.format(ly)
     if foc is not None:
         _msa_options['foc'] = ' -foc {}'.format(foc)
     if tx is not None:
