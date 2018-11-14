@@ -344,7 +344,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         Flag for terminal output
     """
 
-    _msa_options = {}
+    _command = ["msa -prm {} -out {}".format(prm_file, output_file)]
 
     # Make folder for the output files if it doesn't exist already
     directory = os.path.split(output_file)[0]
@@ -353,82 +353,79 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
             os.makedirs(directory)
 
     if input_image is not None:
-        _msa_options['input_image'] = ' -in {}'.format(input_image)
+        _command.append('-in {}'.format(input_image))
     if inw is not None:
-        _msa_options['inw'] = ' -inw {} {}'.format(inw[0], inw[1])
+        _command.append('-inw {} {}'.format(inw[0], inw[1]))
     if px is not None:
-        _msa_options['px'] = ' -px {}'.format(px)
+        _command.append('-px {}'.format(px))
     if py is not None:
-        _msa_options['py'] = ' -py {}'.format(py)
+        _command.append('-py {}'.format(py))
     if lx is not None:
-        _msa_options['lx'] = ' -lx {}'.format(lx)
+        _command.append('-lx {}'.format(lx))
     if ly is not None:
-        _msa_options['ly'] = ' -ly {}'.format(ly)
+        _command.append('-ly {}'.format(ly))
     if foc is not None:
-        _msa_options['foc'] = ' -foc {}'.format(foc)
+        _command.append('-foc {}'.format(foc))
     if tx is not None:
-        _msa_options['tx'] = ' -tx {}'.format(tx)
+        _command.append('-tx {}'.format(tx))
     if ty is not None:
-        _msa_options['ty'] = ' -ty {}'.format(ty)
+        _command.append('-ty {}'.format(ty))
     if otx is not None:
-        _msa_options['otx'] = ' -otx {}'.format(otx)
+        _command.append('-otx {}'.format(otx))
     if oty is not None:
-        _msa_options['oty'] = ' -oty {}'.format(oty)
+        _command.append('-oty {}'.format(oty))
     if sr is not None:
-        _msa_options['sr'] = ' -sr {}'.format(sr)
+        _command.append('-sr {}'.format(sr))
     if abf is not None:
-        _msa_options['abf'] = ' -abf {}'.format(abf)
+        _command.append('-abf {}'.format(abf))
     if buni is not None:
-        _msa_options['buni'] = ' -buni {}'.format(buni)
+        _command.append('-buni {}'.format(buni))
     if uuni is not None:
-        _msa_options['uuni'] = ' -uuni {}'.format(uuni)
+        _command.append('-uuni {}'.format(uuni))
     if ctem:
-        _msa_options['ctem'] = ' /ctem'
+        _command.append('/ctem')
     if txtout:
-        _msa_options['txtout'] = ' /txtout'
+        _command.append('/txtout')
     if _3dout:
-        _msa_options['_3dout'] = ' /_3dout'
+        _command.append('/_3dout')
     if gaussap:
-        _msa_options['gaussap'] = ' /gaussap'
+        _command.append('/gaussap')
     if wave:
-        _msa_options['wave'] = ' /wave'
+        _command.append('/wave')
     if avwave:
-        _msa_options['avwave'] = ' /avwave'
+        _command.append('/avwave')
     if detimg:
-        _msa_options['detimg'] = ' /detimg'
+        _command.append('/detimg')
     if verbose:
-        _msa_options['verbose'] = ' /verbose'
+        _command.append('/verbose')
     if debug:
-        _msa_options['debug'] = ' /debug'
+        _command.append('/debug')
     if lapro:
-        _msa_options['lapro'] = ' /lapro'
+        _command.append('/lapro')
     if waveft:
-        _msa_options['waveft'] = ' /waveft'
+        _command.append(' /waveft')
     if avwaveft:
-        _msa_options['avwaveft'] = ' /avwaveft'
+        _command.append('/avwaveft')
     if pdif:
-        _msa_options['pdif'] = ' /pdif'
+        _command.append('/pdif')
     if pimg:
-        _msa_options['pimg'] = ' /pimg'
+        _command.append('/pimg')
     if epc:
-        _msa_options['epc'] = ' /epc'
+        _command.append('/epc')
     if vtx is not None:
-        _msa_options['vtx'] = ' /vtx {}'.format(vtx)
+        _command.append('/vtx {}'.format(vtx))
     if silent:
-        _msa_options['silent'] = ' /silent'
+        _command.append('/silent')
     if rti:
-        _msa_options['rti'] = ' /rti'
+        _command.append('/rti')
 
-    # Define command
-    command = "msa -prm {} -out {}".format(prm_file, output_file)
-    for key in _msa_options:
-        command += _msa_options[key]
-
-    # Run msa command
-    subprocess.call(command, shell=True)
-
+    # Run wavimg command
     if output:
-        print('Performed msa with the following command:\n', command)
+        co = subprocess.check_output(_command, shell=True)
+        print('Performed msa with the following command:\n', _command)
+        print(co.decode('utf-8'))
+    else:
+        subprocess.call(_command, shell=True)
 
 
 def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
