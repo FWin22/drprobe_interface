@@ -469,12 +469,12 @@ def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
         Flag for terminal output
     """
 
-    _wavimg_options = {}
+    _command = ["wavimg -prm {}".format(prm_file)]
 
     # Check if output_file is given as parameter
     if output_file:
         directory = os.path.split(output_file)[0]
-        _wavimg_options['output_file'] = ' -out {}'.format(output_file)
+        _command.append('-out {}'.format(output_file))
     else:
         with open(prm_file, 'r') as prm:
             _content = prm.readlines()
@@ -482,41 +482,37 @@ def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
             directory = os.path.split(_content[5][0])[0].replace("'", "")
 
     if btx is not None:
-        _wavimg_options['btx'] = ' -btx {}'.format(btx)
+        _command.append('-btx {}'.format(btx))
     if bty is not None:
-        _wavimg_options['bty'] = ' -bty {}'.format(bty)
+        _command.append('-bty {}'.format(bty))
     if foc is not None:
-        _wavimg_options['foc'] = ' -foc {}'.format(foc)
+        _command.append('-foc {}'.format(foc))
     if oar is not None:
-        _wavimg_options['oar'] = ' -oar {}'.format(oar)
+        _command.append('-oar {}'.format(oar))
     if sbshx is not None:
-        _wavimg_options['sbshx'] = ' -sbshx {}'.format(sbshx)
+        _command.append('-sbshx {}'.format(sbshx))
     if sbshy is not None:
-        _wavimg_options['sbshy'] = ' -sbshy {}'.format(sbshy)
+        _command.append('-sbshy {}'.format(sbshy))
     if sil:
-        _wavimg_options['sil'] = ' /sil'
+        _command.append('/sil')
     if dbg:
-        _wavimg_options['dbg'] = ' /dbg'
+        _command.append('/dbg')
     if nli:
-        _wavimg_options['nli'] = ' /nli'
+        _command.append('/nli')
     if rnsb:
-        _wavimg_options['rnsb'] = ' /rnsb'
+        _command.append('/rnsb')
     if rti:
-        _wavimg_options['rti'] = ' /rti'
+        _command.append('/rti')
 
-    # Make folder for outputfiles if it doesn't exist already
+    # Make folder for output files if it doesn't exist already
     if directory:
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-    # Define command
-    command = "wavimg -prm {}".format(prm_file)
-
-    for key in _wavimg_options:
-        command += _wavimg_options[key]
-
     # Run wavimg command
-    subprocess.call(command, shell=True)
-
     if output:
-        print('Performed wavimg with the following command:\n', command)
+        co = subprocess.check_output(_command, shell=True)
+        print('Performed wavimg with the following command:\n', _command)
+        print(co.decode('utf-8'))
+    else:
+        subprocess.call(_command, shell=True)
