@@ -11,7 +11,7 @@ import subprocess
 
 
 def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
-                repeat=None, sort=None, cif=False, override=False):
+                repeat=None, sort=None, cif=False, override=False, output=False):
     """
     Runs cellmuncher. Supports only a few basic options at the moment.
 
@@ -36,32 +36,27 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
         Overrides output file without asking
     """
 
-    _cellmuncher_options = {}
+    _command = ["cellmuncher -f {} -o {}".format(cel_file, output_file)]
 
     if cif:
-        _cellmuncher_options['cif'] = ' --cif'
+        _command.append('--cif')
     if attach_cel is not None:
-        _cellmuncher_options['attach_cel'] = ' --attach-cell={},XMS,{}'.format(attach_cel,
-                                                                               attach_direction)
+        _command.append('--attach-cel={},XMS,{}'.format(attach_cel, attach_direction))
     if repeat is not None:
-        _cellmuncher_options['repeat'] = ' --repeat={},{}'.format(repeat[0], repeat[1])
-
+        _command.append('--repeat={},{}'.format(repeat[0], repeat[1]))
     if sort is not None:
         for item in sort:
-            _cellmuncher_options['sort'] += ' -s={}'.format(item)
+            _command.append('-s={}'.format(item))
     if override:
-        _cellmuncher_options['override'] = ' --override'
+        _command.append('--override')
 
-    # Define command
-    command = "cellmuncher -f {} -o {}".format(cel_file, output_file)
-
-    for key in _cellmuncher_options:
-        command += _cellmuncher_options[key]
-
-    # Run the celslc command
-    subprocess.call(command, shell=True)
-
-    print('Performed cellmuncher with the following command:\n', command)
+    # Run the cellmuncher command
+    if output:
+        co = subprocess.check_output(_command, shell=True)
+        print('Performed cellmuncher with the following command:\n', _command)
+        print(co.decode('utf-8'))
+    else:
+        subprocess.call(_command, shell=True)
 
 
 def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb=False,
@@ -152,7 +147,18 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
         Activates terminal output of celslc command.
     """
 
-    _celslc_options = {}
+    #_celslc_options = {}
+    if cel_file.endswith('.cel') or cel_file.endswith('.txt'):
+        _command = ["celslc -cel {} ".format(cel_file)]
+    elif cel_file.endswith('.cif'):
+        _command = ["celslc -cif {} ".format(cel_file)]
+    else:
+        _command = ["celslc -cel {} ".format(cel_file)]
+
+    if inf is None:
+        _command = ["-slc {} -nx {} -ny {} -nz {} -ht {}".format(slice_name, nx, ny, nz, ht)]
+    else:
+        _command = ["-slc {} -ht {}".format(slice_name, ht)]
 
     # If necessary, create folder for output slices.
     directory = os.path.split(slice_name)[0]
@@ -161,65 +167,51 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
             os.makedirs(directory)
 
     if rev:
-        _celslc_options['rev'] = ' -rev'
+        _command.append('-rev')
     if fl:
-        _celslc_options['fl'] = ' -fl'
+        _command.append('-fl')
     if nv is not None:
-        _celslc_options['nv'] = ' -nv {}'.format(nv)
+        _command.append('-nv {}'.format(nv))
     if dwf:
-        _celslc_options['dwf'] = ' -dwf'
+        _command.append('-dwf')
     if buni is not None:
-        _celslc_options['buni'] = ' -buni {}'.format(buni)
+        _command.append('-buni {}'.format(buni))
     if absorb:
-        _celslc_options['absorb'] = ' -abs'
+        _command.append('-abs')
     if abf is not None:
-        _celslc_options['abf'] = ' -abf {}'.format(abf)
+        _command.append('-abf {}'.format(abf))
     if pot:
-        _celslc_options['pot'] = ' -pot'
+        _command.append('-pot')
     if _3dp:
-        _celslc_options['_3dp'] = ' -3dp'
+        _command.append('-3dp')
     if inf is not None:
-        _celslc_options['inf'] = ' -inf {}'.format(inf)
+        _command.append('-inf {}'.format(inf))
     if pps:
-        _celslc_options['pps'] = ' -pps'
+        _command.append('-pps')
     if ssc is not None:
-        _celslc_options['ssc'] = ' -ssc {}'.format(ssc)
+        _command.append('-ssc {}'.format(ssc))
     if rti:
-        _celslc_options['rti'] = ' -rti'
+        _command.append('-rti')
     if silent:
-        _celslc_options['silent'] = ' -silent'
+        _command.append('-silent')
     if prj is not None:
-        _celslc_options['prj'] = ' -prj'
+        _prj = '-prj'
         for i in prj:
-            _celslc_options['prj'] += ' {},'.format(i)
-        _celslc_options['prj'] = _celslc_options['prj'][:-1]
+            _prj += ' {},'.format(i)
+        _command.append(_prj[:-1])
     if tla is not None:
-        _celslc_options['tla'] = ' -tla'
+        _tla = ' -tla'
         for i in tla:
-            _celslc_options['tla'] += ' {},'.format(i)
-        _celslc_options['tla'] = _celslc_options['tla'][:-1]
-
-    # Define command
-    if cel_file.endswith('.cel') or cel_file.endswith('.txt'):
-        command = "celslc -cel {} ".format(cel_file)
-    elif cel_file.endswith('.cif'):
-        command = "celslc -cif {} ".format(cel_file)
-    else:
-        command = "celslc -cel {} ".format(cel_file)
-
-    if inf is None:
-        command += "-slc {} -nx {} -ny {} -nz {} -ht {}".format(slice_name, nx, ny, nz, ht)
-    else:
-        command += "-slc {} -ht {}".format(slice_name, ht)
-
-    for key in _celslc_options:
-        command += _celslc_options[key]
+            _tla +=  '{},'.format(i)
+        _command.append(_tla[:-1])
 
     # Run the celslc command
-    subprocess.call(command, shell=True)
-
     if output:
-        print('Performed celslc with the following command:\n', command)
+        co = subprocess.check_output(_command, shell=True)
+        print('Performed celslc with the following command:\n', _command)
+        print(co.decode('utf-8'))
+    else:
+        subprocess.call(_command, shell=True)
 
 
 def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=None, ly=None,
@@ -419,7 +411,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
     if rti:
         _command.append('/rti')
 
-    # Run wavimg command
+    # Run msa command
     if output:
         co = subprocess.check_output(_command, shell=True)
         print('Performed msa with the following command:\n', _command)
