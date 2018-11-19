@@ -36,19 +36,19 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
         Overrides output file without asking
     """
 
-    _command = ["cellmuncher -f {} -o {}".format(cel_file, output_file)]
+    _command = "cellmuncher -f {} -o {}".format(cel_file, output_file)
 
     if cif:
-        _command.append('--cif')
+        _command += ' --cif'
     if attach_cel is not None:
-        _command.append('--attach-cel={},XMS,{}'.format(attach_cel, attach_direction))
+        _command += ' --attach-cel={},XMS,{}'.format(attach_cel, attach_direction)
     if repeat is not None:
-        _command.append('--repeat={},{}'.format(repeat[0], repeat[1]))
+        _command += ' --repeat={},{}'.format(repeat[0], repeat[1])
     if sort is not None:
         for item in sort:
-            _command.append('-s={}'.format(item))
+            _command += ' -s={}'.format(item)
     if override:
-        _command.append('--override')
+        _command += ' --override'
 
     # Run the cellmuncher command
     if output:
@@ -149,16 +149,16 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
 
     #_celslc_options = {}
     if cel_file.endswith('.cel') or cel_file.endswith('.txt'):
-        _command = ["celslc -cel {} ".format(cel_file)]
+        _command = "celslc -cel {} ".format(cel_file)
     elif cel_file.endswith('.cif'):
-        _command = ["celslc -cif {} ".format(cel_file)]
+        _command = "celslc -cif {} ".format(cel_file)
     else:
-        _command = ["celslc -cel {} ".format(cel_file)]
+        _command = "celslc -cel {} ".format(cel_file)
 
     if inf is None:
-        _command = ["-slc {} -nx {} -ny {} -nz {} -ht {}".format(slice_name, nx, ny, nz, ht)]
+        _command += " -slc {} -nx {} -ny {} -nz {} -ht {}".format(slice_name, nx, ny, nz, ht)
     else:
-        _command = ["-slc {} -ht {}".format(slice_name, ht)]
+        _command += " -slc {} -ht {}".format(slice_name, ht)
 
     # If necessary, create folder for output slices.
     directory = os.path.split(slice_name)[0]
@@ -167,43 +167,43 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
             os.makedirs(directory)
 
     if rev:
-        _command.append('-rev')
+        _command += ' -rev'
     if fl:
-        _command.append('-fl')
+        _command += ' -fl'
     if nv is not None:
-        _command.append('-nv {}'.format(nv))
+        _command += ' -nv {}'.format(nv)
     if dwf:
-        _command.append('-dwf')
+        _command += ' -dwf'
     if buni is not None:
-        _command.append('-buni {}'.format(buni))
+        _command += ' -buni {}'.format(buni)
     if absorb:
-        _command.append('-abs')
+        _command += ' -abs'
     if abf is not None:
-        _command.append('-abf {}'.format(abf))
+        _command += ' -abf {}'.format(abf)
     if pot:
-        _command.append('-pot')
+        _command += ' -pot'
     if _3dp:
-        _command.append('-3dp')
+        _command += ' -3dp'
     if inf is not None:
-        _command.append('-inf {}'.format(inf))
+        _command += ' -inf {}'.format(inf)
     if pps:
-        _command.append('-pps')
+        _command += ' -pps'
     if ssc is not None:
-        _command.append('-ssc {}'.format(ssc))
+        _command += ' -ssc {}'.format(ssc)
     if rti:
-        _command.append('-rti')
+        _command += ' -rti'
     if silent:
-        _command.append('-silent')
+        _command += ' -silent'
     if prj is not None:
-        _prj = '-prj'
+        _prj = ' -prj'
         for i in prj:
             _prj += ' {},'.format(i)
-        _command.append(_prj[:-1])
+        _command += _prj[:-1]
     if tla is not None:
         _tla = ' -tla'
         for i in tla:
-            _tla +=  '{},'.format(i)
-        _command.append(_tla[:-1])
+            _tla += ' {},'.format(i)
+        _command += _tla[:-1]
 
     # Run the celslc command
     if output:
@@ -336,7 +336,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         Flag for terminal output
     """
 
-    _command = ["msa -prm {} -out {}".format(prm_file, output_file)]
+    _command = "msa -prm {} -out {}".format(prm_file, output_file)
 
     # Make folder for the output files if it doesn't exist already
     directory = os.path.split(output_file)[0]
@@ -345,71 +345,73 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
             os.makedirs(directory)
 
     if input_image is not None:
-        _command.append('-in {}'.format(input_image))
+        _command += ' -in {}'.format(input_image)
     if inw is not None:
-        _command.append('-inw {} {}'.format(inw[0], inw[1]))
+        _command += ' -inw {} {}'.format(inw[0], inw[1])
     if px is not None:
-        _command.append('-px {}'.format(px))
+        _command += ' -px {}'.format(px)
     if py is not None:
-        _command.append('-py {}'.format(py))
+        _command += ' -py {}'.format(py)
     if lx is not None:
-        _command.append('-lx {}'.format(lx))
+        _command += ' -lx {}'.format(lx)
     if ly is not None:
-        _command.append('-ly {}'.format(ly))
+        _command += ' -ly {}'.format(ly)
     if foc is not None:
-        _command.append('-foc {}'.format(foc))
+        _command += ' -foc {}'.format(foc)
     if tx is not None:
-        _command.append('-tx {}'.format(tx))
+        _command += ' -tx {}'.format(tx)
     if ty is not None:
-        _command.append('-ty {}'.format(ty))
+        _command += ' -ty {}'.format(ty)
     if otx is not None:
-        _command.append('-otx {}'.format(otx))
+        _command += ' -otx {}'.format(otx)
     if oty is not None:
-        _command.append('-oty {}'.format(oty))
+        _command += ' -oty {}'.format(oty)
     if sr is not None:
-        _command.append('-sr {}'.format(sr))
+        _command += ' -sr {}'.format(sr)
     if abf is not None:
-        _command.append('-abf {}'.format(abf))
+        _command += ' -abf {}'.format(abf)
     if buni is not None:
-        _command.append('-buni {}'.format(buni))
+        _command += ' -buni {}'.format(buni)
     if uuni is not None:
-        _command.append('-uuni {}'.format(uuni))
+        _command += ' -uuni {}'.format(uuni)
     if ctem:
-        _command.append('/ctem')
+        _command += ' /ctem'
     if txtout:
-        _command.append('/txtout')
+        _command += ' /txtout'
     if _3dout:
-        _command.append('/_3dout')
+        _command += ' /_3dout'
     if gaussap:
-        _command.append('/gaussap')
+        _command += ' /gaussap'
     if wave:
-        _command.append('/wave')
+        _command += ' /wave'
     if avwave:
-        _command.append('/avwave')
+        _command += ' /avwave'
     if detimg:
-        _command.append('/detimg')
+        _command += ' /detimg'
     if verbose:
-        _command.append('/verbose')
+        _command += ' /verbose'
     if debug:
-        _command.append('/debug')
+        _command += ' /debug'
     if lapro:
-        _command.append('/lapro')
+        _command += ' /lapro'
     if waveft:
-        _command.append(' /waveft')
+        _command += ' /waveft'
     if avwaveft:
-        _command.append('/avwaveft')
+        _command += ' /avwaveft'
     if pdif:
-        _command.append('/pdif')
+        _command += ' /pdif'
     if pimg:
-        _command.append('/pimg')
+        _command += ' /pimg'
     if epc:
-        _command.append('/epc')
+        _command += ' /epc'
     if vtx is not None:
-        _command.append('/vtx {}'.format(vtx))
+        _command += ' /vtx {}'.format(vtx)
     if silent:
-        _command.append('/silent')
+        _command += ' /silent'
     if rti:
-        _command.append('/rti')
+        _command += ' /rti'
+
+    print('Performed msa with the following command:\n', _command)
 
     # Run msa command
     if output:
@@ -458,12 +460,12 @@ def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
         Flag for terminal output
     """
 
-    _command = ["wavimg -prm {}".format(prm_file)]
+    _command = "wavimg -prm {}".format(prm_file)
 
     # Check if output_file is given as parameter
     if output_file:
         directory = os.path.split(output_file)[0]
-        _command.append('-out {}'.format(output_file))
+        _command += ' -out {}'.format(output_file)
     else:
         with open(prm_file, 'r') as prm:
             _content = prm.readlines()
@@ -471,27 +473,27 @@ def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
             directory = os.path.split(_content[5][0])[0].replace("'", "")
 
     if btx is not None:
-        _command.append('-btx {}'.format(btx))
+        _command += ' -btx {}'.format(btx)
     if bty is not None:
-        _command.append('-bty {}'.format(bty))
+        _command += ' -bty {}'.format(bty)
     if foc is not None:
-        _command.append('-foc {}'.format(foc))
+        _command += ' -foc {}'.format(foc)
     if oar is not None:
-        _command.append('-oar {}'.format(oar))
+        _command += ' -oar {}'.format(oar)
     if sbshx is not None:
-        _command.append('-sbshx {}'.format(sbshx))
+        _command += ' -sbshx {}'.format(sbshx)
     if sbshy is not None:
-        _command.append('-sbshy {}'.format(sbshy))
+        _command += ' -sbshy {}'.format(sbshy)
     if sil:
-        _command.append('/sil')
+        _command += ' /sil'
     if dbg:
-        _command.append('/dbg')
+        _command += ' /dbg'
     if nli:
-        _command.append('/nli')
+        _command += ' /nli'
     if rnsb:
-        _command.append('/rnsb')
+        _command += ' /rnsb'
     if rti:
-        _command.append('/rti')
+        _command += ' /rti'
 
     # Make folder for output files if it doesn't exist already
     if directory:
