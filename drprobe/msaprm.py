@@ -250,7 +250,7 @@ class MsaPrm(object):
             string_9 = "Number of aberration definitions following"
             prm.write("{} ! {}\n".format(self.number_of_aberrations, string_9))
             for key in self.aberrations_dict:
-                prm.write('{} {} {} ! {}\n'.format(key, self.aberrations_dict[key][0],
+                prm.write('{} {:.4f} {:.4f} ! {}\n'.format(key, self.aberrations_dict[key][0],
                                                      self.aberrations_dict[key][1],
                                                      aberrations[key]))
             prm.write("'[Multislice Parameters]'\n")
