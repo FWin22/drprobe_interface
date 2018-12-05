@@ -226,7 +226,7 @@ class WavimgPrm(object):
             for i in range(n):
                 index = int(content[18 + i][0])
                 aberrations_dict[index] = (float(content[18 + i][1]), float(content[18 + i][2]))
-            self.number_of_aber = int(content[17][0])
+            #self.number_of_aber = int(content[17][0])
             self.aberrations_dict = aberrations_dict
             self.oa_radius = float(content[18 + n][0])
             self.oa_position = (int(content[19 + n][0]), int(content[19 + n][1]))

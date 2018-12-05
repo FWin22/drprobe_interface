@@ -98,9 +98,14 @@ class MsaPrm(object):
         defined by prm_filename.
     """
 
-    def __init__(self, msa_dict=None):
+    def __init__(self, msa_dict=None, aberrations_dict=None):
         if msa_dict is None:
             msa_dict = {}
+
+        if aberrations_dict is None:
+            self.aberrations_dict = {}
+        else:
+            self.aberrations_dict = aberrations_dict
 
         self.conv_semi_angle = msa_dict.get('conv_semi_angle', 30)
         self.inner_radius_ann_det = msa_dict.get('inner_radius_ann_det', 0)
@@ -111,7 +116,7 @@ class MsaPrm(object):
         self.focus_spread = msa_dict.get('focus_spread', 3)
         self.focus_spread_kernel_hw = msa_dict.get('focus_spread_kernel_hw', 2)
         self.focus_spread_kernel_size = msa_dict.get('focus_spread_kernel_size', 7)
-        self.number_of_aber = msa_dict.get('number_of_aber', 0)
+        # self.number_of_aber = msa_dict.get('number_of_aber', 0)
         self.tilt_x = msa_dict.get('tilt_x', 0)
         self.tilt_y = msa_dict.get('tilt_y', 0)
         self.h_scan_offset = msa_dict.get('h_scan_offset', 0)
@@ -133,6 +138,10 @@ class MsaPrm(object):
         self.det_readout_period = msa_dict.get('det_readout_period', 1)
         self.tot_number_of_slices = msa_dict.get('tot_number_of_slices', 10)
 
+    @property
+    def number_of_aberrations(self):
+        return len(self.aberrations_dict.keys())
+
     def load_msa_prm(self, prm_filename, output=False):
         """
         Loads the parameterfile 'prm_filename'.
@@ -144,6 +153,8 @@ class MsaPrm(object):
         output : bool, optional
             Flag for terminal output
         """
+        aberrations_dict = {}
+
         with open(prm_filename, 'r') as prm:
             content = prm.readlines()
             content = [re.split(r'[,\s]\s*', line) for line in content]
@@ -156,27 +167,32 @@ class MsaPrm(object):
             self.focus_spread = float(content[7][0])
             self.focus_spread_kernel_hw = float(content[8][0])
             self.focus_spread_kernel_size = float(content[9][0])
-            self.number_of_aber = int(content[10][0])
-            self.tilt_x = float(content[12][0])
-            self.tilt_y = float(content[13][0])
-            self.h_scan_offset = float(content[14][0])
-            self.v_scan_offset = float(content[15][0])
-            self.h_scan_frame_size = float(content[16][0])
-            self.v_scan_frame_size = float(content[17][0])
-            self.scan_frame_rot = float(content[18][0])
-            self.scan_columns = int(content[19][0])
-            self.scan_rows = int(content[20][0])
-            self.temp_coherence_flag = int(content[21][0])
-            self.spat_coherence_flag = int(content[22][0])
-            self.super_cell_x = int(content[23][0])
-            self.super_cell_y = int(content[24][0])
-            self.super_cell_z = int(content[25][0])
-            self.slice_files = content[26][0]
-            self.number_of_slices = int(content[27][0])
-            self.number_frozen_lattice = int(content[28][0])
-            self.min_num_frozen = int(content[29][0])
-            self.det_readout_period = int(content[30][0])
-            self.tot_number_of_slices = int(content[31][0])
+            n = int(content[10][0])
+            # self.number_of_aber = n
+            for i in range(n):
+                index = int(content[11 + i][0])
+                aberrations_dict[index] = (float(content[11 + i][1]), float(content[11 + i][2]))
+            self.aberrations_dict = aberrations_dict
+            self.tilt_x = float(content[12+n][0])
+            self.tilt_y = float(content[13+n][0])
+            self.h_scan_offset = float(content[14+n][0])
+            self.v_scan_offset = float(content[15+n][0])
+            self.h_scan_frame_size = float(content[16+n][0])
+            self.v_scan_frame_size = float(content[17+n][0])
+            self.scan_frame_rot = float(content[18+n][0])
+            self.scan_columns = int(content[19+n][0])
+            self.scan_rows = int(content[20+n][0])
+            self.temp_coherence_flag = int(content[21+n][0])
+            self.spat_coherence_flag = int(content[22+n][0])
+            self.super_cell_x = int(content[23+n][0])
+            self.super_cell_y = int(content[24+n][0])
+            self.super_cell_z = int(content[25+n][0])
+            self.slice_files = content[26+n][0]
+            self.number_of_slices = int(content[27+n][0])
+            self.number_frozen_lattice = int(content[28+n][0])
+            self.min_num_frozen = int(content[29+n][0])
+            self.det_readout_period = int(content[30+n][0])
+            self.tot_number_of_slices = int(content[31+n][0])
 
         if output:
             print("Parameters successfully loaded from file '{}'!".format(prm_filename))
@@ -197,6 +213,19 @@ class MsaPrm(object):
         if directory:
             if not os.path.isdir(directory):
                 os.makedirs(directory)
+
+        aberrations = {0: 'image_shift',
+                       1: 'defocus',
+                       2: '2-fold-astigmatism',
+                       3: 'coma',
+                       4: '3-fold-astigmatism',
+                       5: 'CS',
+                       6: 'star_aberration',
+                       7: '4-fold-astigmatism',
+                       8: 'coma(5th)',
+                       9: 'lobe-aberration',
+                       10: '5-fold-astigmatism',
+                       11: 'C5'}
 
         with open(prm_filename, 'w') as prm:
             prm.write("'[Microscope Parameters]'\n")
@@ -219,7 +248,11 @@ class MsaPrm(object):
             string_8 = "Focus-spread kernel size"
             prm.write("{} ! {}\n".format(self.focus_spread_kernel_size, string_8))
             string_9 = "Number of aberration definitions following"
-            prm.write("{} ! {}\n".format(self.number_of_aber, string_9))
+            prm.write("{} ! {}\n".format(self.number_of_aberrations, string_9))
+            for key in self.aberrations_dict:
+                prm.write('{}, {}, {} ! {}\n'.format(key, self.aberrations_dict[key][0],
+                                                     self.aberrations_dict[key][1],
+                                                     aberrations[key]))
             prm.write("'[Multislice Parameters]'\n")
             string_10 = "Object tilt X [deg]. Approximative approach. Do not use for tilts " \
                         "larger than 5 degrees."
