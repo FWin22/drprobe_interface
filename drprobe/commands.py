@@ -411,8 +411,6 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
     if rti:
         _command += ' /rti'
 
-    print('Performed msa with the following command:\n', _command)
-
     # Run msa command
     if output:
         co = subprocess.check_output(_command, shell=True)
