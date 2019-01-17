@@ -218,7 +218,8 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         foc=None, tx=None, ty=None, otx=None, oty=None, sr=None, abf=None, buni=None, uuni=None,
         ctem=False, txtout=False, _3dout=False, gaussap=False, wave=False, avwave=False,
         detimg=False, verbose=False, debug=False, lapro=False, waveft=False, avwaveft=False,
-        pdif=False, pimg=False, epc=False, vtx=None, silent=False, rti=False, output=False):
+        pdif=False, pimg=False, epc=False, vtx=None, kmom=None, silavwave=False,
+        silavwaveft=False, silent=False, rti=False, output=False):
     """
     Runs msa from Dr. Probe
 
@@ -327,7 +328,25 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         STEM multislice.
     vtx : int, optional
         Enable the use of vortex probes in STEM mode. The integer specifies the orbital angular
-        momentum of the probe.
+        momentum of the probe. The second parameter defines the maximum range of moment
+        integration in mrad.
+    kmom : tuple, optional
+        Ouputs the 32-bit k-space momentum images for each integral of the order 0 up to the
+        first integer parameter.
+    silavwave : bool, optional
+        Activates the calculation of average wave functions over multiple frozen-lattice
+        calculations. The switch refers to a real-space representation of the wave function.
+        There will be no output of the wave function, but the separation of elastic and
+        thermal-diffuse scattering is enabled for separate output of other signal (STEM images,
+        diffraction patterns, probe images and moments of the intensity distribution in the
+        diffraction plane.)
+    silavwaveft : bool, optional
+        Activates the calculation of average wave functions over multiple frozen-lattice
+        calculations. The switch refers to a reciprocal-space representation of the wave function.
+        There will be no output of the wave function, but the separation of elastic and
+        thermal-diffuse scattering is enabled for separate output of other signal (STEM images,
+        diffraction patterns, probe images and moments of the intensity distribution in the
+        diffraction plane.)
     silent : bool, optional
         Flag for deactivating all console output.
     rti : bool, optional
@@ -406,6 +425,12 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         _command += ' /epc'
     if vtx is not None:
         _command += ' /vtx {}'.format(vtx)
+    if kmom is not None:
+        _command += ' -kmom {} {}'.format(kmom[0], kmom[1])
+    if silavwave:
+        _command += ' /silavwave'
+    if silavwaveft:
+        _command += ' /silavwaveft'
     if silent:
         _command += ' /silent'
     if rti:
