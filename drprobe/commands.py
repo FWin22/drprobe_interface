@@ -398,7 +398,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
     if txtout:
         _command += ' /txtout'
     if _3dout:
-        _command += ' /_3dout'
+        _command += ' /3dout'
     if gaussap:
         _command += ' /gaussap'
     if wave:
