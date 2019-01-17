@@ -175,7 +175,7 @@ class WavimgPrm(object):
         self.spat_coherence = wavimg_dict.get('spat_coherence', (1, 0.4))
         self.mtf = wavimg_dict.get('mtf', (1, 1, "PICO-US4k-080_mtf_bin1_4096.mtf"))
         self.vibration = wavimg_dict.get('vibration', (1, 0.022, 0.022, 0))
-        self.number_of_aber = wavimg_dict.get('number_of_aber', self.number_of_aberrations)
+        # self.number_of_aber = wavimg_dict.get('number_of_aber', self.number_of_aberrations)
         self.oa_radius = wavimg_dict.get('oa_radius', 15)
         self.oa_position = wavimg_dict.get('oa_position', (0, 0))
         self.number_of_loops = wavimg_dict.get('number_of_loops', 0)
@@ -342,8 +342,13 @@ class WavimgPrm(object):
             string_18 = "Number of aberration definitions following this line."
             prm.write("{} ! {}\n".format(self.number_of_aberrations, string_18))
             for key in self.aberrations_dict:
-                prm.write('{}, {}, {} ! {}\n'.format(key, self.aberrations_dict[key][0],
-                                      self.aberrations_dict[key][1], aberrations[key]))
+                prm.write('{} {:.4f} {:.4f} ! {}\n'.format(key, self.aberrations_dict[key][0],
+                                                           self.aberrations_dict[key][1],
+                                                           aberrations[key]))
+            #prm.write("{} ! {}\n".format(self.number_of_aberrations, string_18))
+            #for key in self.aberrations_dict:
+            #    prm.write('{}, {}, {} ! {}\n'.format(key, self.aberrations_dict[key][0],
+            #                          self.aberrations_dict[key][1], aberrations[key]))
             string_19 = "Objective aperture radius [mrad]. Set to very large values to deactivate."
             prm.write("{} ! {}\n".format(self.oa_radius, string_19))
             string_20 = "Center of the objective aperture with respect to the zero beam [mrad]."
