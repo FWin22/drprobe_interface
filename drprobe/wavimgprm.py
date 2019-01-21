@@ -222,7 +222,7 @@ class WavimgPrm(object):
             self.vibration = (int(content[16][0]), float(content[16][1]), float(content[16][2]),
                               float(content[16][3]))
             n = int(content[17][0])
-            self.number_of_aber = n
+            # self.number_of_aber = n
             for i in range(n):
                 index = int(content[18 + i][0])
                 aberrations_dict[index] = (float(content[18 + i][1]), float(content[18 + i][2]))

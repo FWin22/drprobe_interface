@@ -218,7 +218,7 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         foc=None, tx=None, ty=None, otx=None, oty=None, sr=None, abf=None, buni=None, uuni=None,
         ctem=False, txtout=False, _3dout=False, gaussap=False, wave=False, avwave=False,
         detimg=False, verbose=False, debug=False, lapro=False, waveft=False, avwaveft=False,
-        pdif=False, pimg=False, epc=False, vtx=None, kmom=None, silavwave=False,
+        pdif=False, pimg=False, epc=False, vtx=None, detslc=None, kmom=None, silavwave=False,
         silavwaveft=False, silent=False, rti=False, output=False):
     """
     Runs msa from Dr. Probe
@@ -330,8 +330,13 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         Enable the use of vortex probes in STEM mode. The integer specifies the orbital angular
         momentum of the probe. The second parameter defines the maximum range of moment
         integration in mrad.
+    detslc : string, optional
+        Input of slice numbers by a text file. These numbers define the slices, where detector
+        readout and other data output will be done. The text file should provide a list of
+        integer numbers with one number per line. The incident plane is identified by 0. This
+        option overrides the periodic detection input made by the parameter file.
     kmom : tuple, optional
-        Ouputs the 32-bit k-space momentum images for each integral of the order 0 up to the
+        Output 32-bit k-space momentum images for each integral moment of the order 0 up to the
         first integer parameter.
     silavwave : bool, optional
         Activates the calculation of average wave functions over multiple frozen-lattice
@@ -425,6 +430,8 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         _command += ' /epc'
     if vtx is not None:
         _command += ' /vtx {}'.format(vtx)
+    if detslc is not None:
+        _command += ' -detslc {}'.format(detslc)
     if kmom is not None:
         _command += ' -kmom {} {}'.format(kmom[0], kmom[1])
     if silavwave:
