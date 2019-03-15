@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="drprobe_interface",
-    version='0.1.15',
+    version='0.1.16',
     url='https://github.com/FWin22/drprobe_interface',
     packages=setuptools.find_packages(),
     author='Florian Winkler',
