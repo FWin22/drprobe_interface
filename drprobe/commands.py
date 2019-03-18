@@ -164,7 +164,7 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
     directory = os.path.split(slice_name)[0]
     if directory:
         if not os.path.isdir(directory):
-            os.makedirs(directory)
+            os.makedirs(directory, exist_ok=True)
 
     if rev:
         _command += ' -rev'
@@ -363,10 +363,10 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
     _command = "msa -prm {} -out {}".format(prm_file, output_file)
 
     # Make folder for the output files if it doesn't exist already
-    #directory = os.path.split(output_file)[0]
-    #if directory:
-    #    if not os.path.isdir(directory):
-    #        os.makedirs(directory)
+    directory = os.path.split(output_file)[0]
+    if directory:
+        if not os.path.isdir(directory):
+            os.makedirs(directory, exist_ok=True)
 
     if input_image is not None:
         _command += ' -in {}'.format(input_image)
@@ -528,7 +528,7 @@ def wavimg(prm_file, output_file=None, foc=None, btx=None, bty=None, oar=None,
     # Make folder for output files if it doesn't exist already
     if directory:
         if not os.path.isdir(directory):
-            os.makedirs(directory)
+            os.makedirs(directory, exist_ok=True)
 
     # Run wavimg command
     if output:

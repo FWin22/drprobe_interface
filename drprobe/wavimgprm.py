@@ -251,7 +251,7 @@ class WavimgPrm(object):
         directory = os.path.split(prm_filename)[0]
         if directory:
             if not os.path.isdir(directory):
-                os.makedirs(directory)
+                os.makedirs(directory, exist_ok=True)
 
         aberrations = {0: 'image_shift',
                        1: 'defocus',
