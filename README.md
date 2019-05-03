@@ -15,6 +15,7 @@ package.](http://www.er-c.org/barthel/drprobe/)
 The user is referred to the documentation of the Dr Probe command line tools for further
 information on S(TEM) image simulation. The following example provides a basic overview on the
 workflow of using the drprobe_interface package.
+A more detailled example for an HRTEM image simulation of SrTiO3 is given in the examples folder.
 
 Import the drprobe_interface package:
     
