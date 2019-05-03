@@ -1,0 +1,43 @@
+'[Microscope Parameters]'
+30                         ! Semi angle of convergence [mrad]
+0                          ! Inner radius of the annular detector [mrad]
+30                         ! Outer radius of the annular detector [mrad]
+0, 'prm/msa_det.prm'       ! Detector definition file, switch and file name
+0.00197                    ! Electron wavelength [nm]
+0.01                       ! De-magnified source radius (1/e half width) [nm]
+3                          ! Focus spread [nm]
+2                          ! Focus-spread kernel half-width w.r.t. the focus spread
+7                          ! Focus-spread kernel size
+0                          ! Number of aberration definitions following
+'[Multislice Parameters]'
+1                          ! Object tilt X [deg]. Approximative approach. Do not use for tilts larger than 5 degrees.
+0                          ! Object tilt Y [deg]. Approximative approach. Do not use for tilts larger than 5 degrees.
+0                          ! Horizontal scan frame offset [nm].
+0                          ! Vertical scan frame offset [nm].
+0.3901                     ! Horizontal scan frame size [nm].
+0.3901                     ! Vertical scan frame size [nm].
+0                          ! Scan frame rotation [deg] w.r.t. the slice data.
+40                         ! Number of scan columns = number of pixels on horizontal scan image axis.
+40                         ! Number of scan rows = number of pixels on vertical scan image axis.
+0                          ! Switch for partial temporal coherence calculation. Drastic increase of calculation time if activated.
+1                          ! Switch for partial spatial coherence calculation. Is only applied in combination with an input image file.
+1                          ! Supercell repeat factor in horizontal direction, x.
+1                          ! Supercell repeat factor in vertical direction, y.
+1                          ! Supercell repeat factor in Z-direction, obsolete.
+'slc/STO'                  ! Slice file series name [SFN]. Expected file names are [SFN]+'_###.sli' where ### is a three digit number.
+2                          ! Number of slice files to load.
+1                          ! Number of frozen lattice variants per slice.
+1                          ! Minimum number of frozen lattice variations averaged per scan pixel in STEM mode.
+2                          ! Detector readout period in slices.
+10                         ! Number of slices in the object.
+0                          ! Slice ID
+1                          ! Slice ID
+0                          ! Slice ID
+1                          ! Slice ID
+0                          ! Slice ID
+1                          ! Slice ID
+0                          ! Slice ID
+1                          ! Slice ID
+0                          ! Slice ID
+1                          ! Slice ID
+End of parameter file.
