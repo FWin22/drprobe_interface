@@ -19,8 +19,9 @@ class MsaPrm(object):
 
     Attributes
     ----------
-    conv_semi_angle : float
+    conv_semi_angle : float or list of floats
         Semi angle of convergence [mrad]
+        If a list of 3 numbers if given applies an asymmetric probe convergence angle distribution.
     inner_radius_ann_det : float
         Inner radius of the annular detector [mrad]
     outer_radius_ann_det : float
@@ -158,7 +159,13 @@ class MsaPrm(object):
         with open(prm_filename, 'r') as prm:
             content = prm.readlines()
             content = [re.split(r'[,\s]\s*', line) for line in content]
-            self.conv_semi_angle = float(content[1][0])
+            if content[1].index('!') == 3:
+                self.conv_semi_angle = (float(content[1][0]), float(content[1][1]),
+                                        float(content[1][2]))
+            elif content[1].index('!') == 1:
+                self.conv_semi_angle = float(content[1][0])
+            else:
+                self.conv_semi_angle = 0
             self.inner_radius_ann_det = float(content[2][0])
             self.outer_radius_ann_det = float(content[3][0])
             self.detector = (int(content[4][0]), content[4][1])
@@ -230,7 +237,16 @@ class MsaPrm(object):
         with open(prm_filename, 'w') as prm:
             prm.write("'[Microscope Parameters]'\n")
             string_0 = "Semi angle of convergence [mrad]"
-            prm.write("{} ! {}\n".format(self.conv_semi_angle, string_0))
+            if isinstance(self.conv_semi_angle, (int, float)):
+                prm.write("{} ! {}\n".format(self.conv_semi_angle, string_0))
+            elif isinstance(self.conv_semi_angle, (tuple, list, np.ndarray)):
+                if len(self.conv_semi_angle) == 3:
+                    prm.write("{}, {}, {} ! {}\n".format(self.conv_semi_angle[0],
+                                                         self.conv_semi_angle[1],
+                                                         self.conv_semi_angle[2],
+                                                         string_0))
+            else:
+                prm.write("{} ! {}\n".format(0, string_0))
             string_1 = "Inner radius of the annular detector [mrad]"
             prm.write("{} ! {}\n".format(self.inner_radius_ann_det, string_1))
             string_2 = "Outer radius of the annular detector [mrad]"
