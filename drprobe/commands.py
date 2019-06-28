@@ -218,8 +218,8 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         foc=None, tx=None, ty=None, otx=None, oty=None, sr=None, abf=None, buni=None, uuni=None,
         ctem=False, txtout=False, _3dout=False, gaussap=False, wave=False, avwave=False,
         detimg=False, verbose=False, debug=False, lapro=False, waveft=False, avwaveft=False,
-        pdif=False, pimg=False, epc=False, vtx=None, detslc=None, kmom=None, silavwave=False,
-        silavwaveft=False, silent=False, rti=False, output=False):
+        pdif=False, pimg=False, epc=False, vtx=None, detslc=None, kmom=None,
+        padif=False, silavwave=False, silavwaveft=False, silent=False, rti=False, output=False):
     """
     Runs msa from Dr. Probe
 
@@ -338,6 +338,8 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
     kmom : tuple, optional
         Output 32-bit k-space momentum images for each integral moment of the order 0 up to the
         first integer parameter.
+    padif : bool, optional
+        Output of probe positioned averaged diffraction patterns
     silavwave : bool, optional
         Activates the calculation of average wave functions over multiple frozen-lattice
         calculations. The switch refers to a real-space representation of the wave function.
@@ -434,6 +436,8 @@ def msa(prm_file, output_file, input_image=None, inw=None, px=None, py=None, lx=
         _command += ' -detslc {}'.format(detslc)
     if kmom is not None:
         _command += ' -kmom {} {}'.format(kmom[0], kmom[1])
+    if padif:
+        _command += ' /padif'
     if silavwave:
         _command += ' /silavwave'
     if silavwaveft:
