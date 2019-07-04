@@ -7,11 +7,13 @@ Created on Mon Apr  4 09:56:58 2016
 
 import os
 import re
+import numpy as np
 import subprocess
 
 
 def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
-                repeat=None, sort=None, cif=False, override=False, output=False):
+                repeat=None, set_dwf=None, frozen_lattice=None, remove_close_atoms=None,
+                sort=None, cif=False, override=False, output=False):
     """
     Runs cellmuncher. Supports only a few basic options at the moment.
 
@@ -27,7 +29,18 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
         direction in which the cel shall be attached (x, y, z)
     repeat : (str, int), optional
         repeat the cel file in a certain direction, e.g., ('x', 5) repeats the cel file 5 times in
-        x-direction)
+        x-direction). Can be a list of 1 to 3 tuples.
+    set_dwf : (str, int), optional
+        set the Debye- Waller factor for one element, e.g.,  ('Sr', 0.0046) sets the Debye-Waller
+        factor of strontium atoms to 0.0046 nm^2, the DW factor corresponds to 8*pi^2*u^2,
+        where u^2 is the isotropic mean quadratic displacement. Can be a list of several tuples.
+    frozen_lattice : str, list of str, optional
+        generate a frozen lattice configuration. String must be either 'x', 'y', 'z' or a
+        combination of them
+    remove_close_atoms : float or (float, str), optional
+        removes atoms that are closer than a certain distance to an atom that appeared earlier
+        in the list. Distance in Angstrom . String: optional file-name to save an XMS cel file
+        containing the deleted atoms.
     sort : list of str, optional
         sort cel file according to strings (eg, 'x' for x-coordinate or 'e' for element)
     cif : bool, optional
@@ -43,7 +56,27 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
     if attach_cel is not None:
         _command += ' --attach-cel={},XMS,{}'.format(attach_cel, attach_direction)
     if repeat is not None:
-        _command += ' --repeat={},{}'.format(repeat[0], repeat[1])
+        repeat = np.atleast_2d(repeat)
+        for r in repeat:
+            _command += ' --repeat={},{}'.format(r[0], r[1])
+    if set_dwf is not None:
+        set_dwf = np.atleast_2d(set_dwf)
+        for d in set_dwf:
+            _command += ' --set-dw-factor={},{}'.format(d[0], d[1])
+    if frozen_lattice is not None:
+        frozen_lattice = np.atleast_1d(frozen_lattice)
+        fl_str = ''
+        for f in frozen_lattice:
+            fl_str += '{},'.format(f)
+        fl_str = fl_str[:-1]
+        _command += ' --frozen-lattice={}'.format(fl_str)
+    if remove_close_atoms is not None:
+        remove_close_atoms = np.atleast_1d(remove_close_atoms)
+        if len(remove_close_atoms) == 1:
+            _command += '--remove-close-atoms={}'.format(remove_close_atoms[0])
+        elif len(remove_close_atoms) == 2:
+            _command += '--remove-close-atoms={},{}'.format(remove_close_atoms[0],
+                                                            remove_close_atoms[1])
     if sort is not None:
         for item in sort:
             _command += ' -s={}'.format(item)
