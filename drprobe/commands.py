@@ -73,9 +73,9 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
     if remove_close_atoms is not None:
         remove_close_atoms = np.atleast_1d(remove_close_atoms)
         if len(remove_close_atoms) == 1:
-            _command += '--remove-close-atoms={}'.format(remove_close_atoms[0])
+            _command += ' --remove-close-atoms={}'.format(remove_close_atoms[0])
         elif len(remove_close_atoms) == 2:
-            _command += '--remove-close-atoms={},{}'.format(remove_close_atoms[0],
+            _command += ' --remove-close-atoms={},{}'.format(remove_close_atoms[0],
                                                             remove_close_atoms[1])
     if sort is not None:
         for item in sort:
