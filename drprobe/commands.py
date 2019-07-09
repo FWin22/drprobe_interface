@@ -49,7 +49,7 @@ def cellmuncher(cel_file, output_file, attach_cel=None, attach_direction=None,
         Overrides output file without asking
     """
 
-    _command = "cellmuncher -f {} -o {}".format(cel_file, output_file)
+    _command = "CellMuncher -f {} -o {}".format(cel_file, output_file)
 
     if cif:
         _command += ' --cif'
