@@ -204,7 +204,7 @@ class MsaPrm(object):
         if output:
             print("Parameters successfully loaded from file '{}'!".format(prm_filename))
 
-    def save_msa_prm(self, prm_filename, output=False):
+    def save_msa_prm(self, prm_filename, random_slices=False, output=False):
         """
         Saves the MsaPrm object in the parameterfile 'prm_filename'.
 
@@ -212,6 +212,8 @@ class MsaPrm(object):
         ----------
         prm_filename : str
             The name of the parameterfile. Will be saved into the subfolder 'prm/'
+        random_slices : Boolean
+            WRITE SMTHING HERE
         output : bool, optional
             Flag for terminal output.
         """
@@ -317,8 +319,16 @@ class MsaPrm(object):
             string_29 = "Number of slices in the object."
             prm.write("{} ! {}\n".format(self.tot_number_of_slices, string_29))
 
-            for i in range(self.tot_number_of_slices):
-                prm.write("{} ! Slice ID\n".format(i % self.number_of_slices))
+            if random_slices:
+                if self.tot_number_of_slices < self.number_of_slices:
+                    ld = int(self.number_of_slices - self.tot_number_of_slices)
+                    lo = np.random.randint(0, ld)
+                    for i in range(lo, self.tot_number_of_slices + lo):
+                        prm.write("{} ! Slice ID\n".format(i % self.number_of_slices))
+                #elif self.tot_number_of_slices >= self.number_of_slices:
+            else:
+                for i in range(self.tot_number_of_slices):
+                    prm.write("{} ! Slice ID\n".format(i % self.number_of_slices))
             prm.write("End of parameter file.")
 
         # Sort prm file
