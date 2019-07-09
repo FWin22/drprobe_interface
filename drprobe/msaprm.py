@@ -10,6 +10,7 @@ Created on Mon Apr  4 15:00:02 2016
 import numpy as np
 import re
 import os
+from functools import reduce
 
 
 class MsaPrm(object):
@@ -142,6 +143,11 @@ class MsaPrm(object):
     @property
     def number_of_aberrations(self):
         return len(self.aberrations_dict.keys())
+
+    def factors(self, n):
+        return np.sort(list(reduce(list.__add__,
+                                   ([i, n // i] for i in range(1, int(n ** 0.5) + 1) if
+                                    n % i == 0))))
 
     def load_msa_prm(self, prm_filename, output=False):
         """
@@ -325,7 +331,16 @@ class MsaPrm(object):
                     lo = np.random.randint(0, ld)
                     for i in range(lo, self.tot_number_of_slices + lo):
                         prm.write("{} ! Slice ID\n".format(i % self.number_of_slices))
-                #elif self.tot_number_of_slices >= self.number_of_slices:
+                elif self.tot_number_of_slices >= self.number_of_slices:
+                    fm = self.factors(self.tot_number_of_slices)
+                    idx = int((len(fm) + 1) / 2)
+                    len_div = int(fm[idx])
+                    num_div = int(self.tot_number_of_slices / len_div)
+                    ld = self.number_of_slices - len_div
+                    for j in range(num_div):
+                        lo = np.random.randint(0, ld)
+                        for i in range(lo, len_div + lo):
+                            prm.write("{} ! Slice ID\n".format(i % self.number_of_slices))
             else:
                 for i in range(self.tot_number_of_slices):
                     prm.write("{} ! Slice ID\n".format(i % self.number_of_slices))
