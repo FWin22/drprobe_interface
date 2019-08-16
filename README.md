@@ -9,7 +9,7 @@ package.](http://www.er-c.org/barthel/drprobe/)
 
 ## Installation
 
-    pip install --index-url https://test.pypi.org/simple/ drprobe-interface
+    pip install drprobe-interface
 
 ## Example
 The user is referred to the documentation of the Dr Probe command line tools for further
