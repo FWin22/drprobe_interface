@@ -228,14 +228,14 @@ def celslc(cel_file, slice_name, ht, nx=None, ny=None, nz=None, abf=None, absorb
     if silent:
         _command += ' -silent'
     if prj is not None:
-        _prj = ' -prj'
+        _prj = ' -prj '
         for i in prj:
-            _prj += ' {},'.format(i)
+            _prj += '{},'.format(i)
         _command += _prj[:-1]
     if tla is not None:
-        _tla = ' -tla'
+        _tla = ' -tla '
         for i in tla:
-            _tla += ' {},'.format(i)
+            _tla += '{},'.format(i)
         _command += _tla[:-1]
 
     # Run the celslc command
